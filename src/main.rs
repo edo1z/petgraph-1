@@ -28,16 +28,18 @@ fn dfs(g: &Graph<i32, i32>) -> Graph<i32, i32> {
     let mut dfs = Dfs::new(&g, NodeIndex::new(start));
     let mut route = vec![];
     let mut prev = start;
-    let mut node_len = 0;
+    let mut max_idx = 0;
     while let Some(node_idx) = dfs.next(&g) {
-        node_len += 1;
         let idx = node_idx.index();
         if idx != start {
+            if idx > max_idx {
+                max_idx = idx
+            }
             route.push((prev, idx));
             prev = node_idx.index();
         }
     }
-    create_graph(node_len, &route)
+    create_graph(max_idx + 1, &route)
 }
 
 fn main() -> std::io::Result<()> {
